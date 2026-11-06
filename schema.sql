@@ -1,4 +1,16 @@
-CREATE TABLE visits (
+CREATE TABLE users (
     id INTEGER PRIMARY KEY,
-    visited_at TEXT
+    username TEXT UNIQUE,
+    password_hash TEXT
+);
+
+
+
+CREATE TABLE recipes (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    cooking_time INTEGER,
+    ingredients TEXT,
+    instructions TEXT,
+    user_id INTEGER REFERENCES users
 );
