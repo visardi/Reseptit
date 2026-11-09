@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
+import recipes
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -24,8 +25,8 @@ def create_recipe():
     instructions= request.form["instructions"]
     user_id = session["user_id"]
 
-    sql = "INSERT INTO recipes (name, cooking_time, ingredients, instructions, user_id) VALUES (?, ?, ?, ?, ?)"
-    db.execute(sql, [name, cooking_time, ingredients, instructions, user_id])
+
+    recipes.add_recipe(name, cooking_time, ingredients, instructions, user_id)
 
     return redirect("/")
 
