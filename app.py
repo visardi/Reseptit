@@ -11,7 +11,13 @@ app.secret_key = config.secret_key
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    all_recipes = recipes.get_recipes()
+    return render_template("index.html", recipes=all_recipes)
+
+@app.route("/recipe/<int:recipe_id>")
+def show_recipe(recipe_id):
+    recipe = recipes.get_recipe(recipe_id)
+    return render_template("show_recipe.html", recipe=recipe)
 
 @app.route("/new_recipe")
 def new_recipe():
@@ -19,6 +25,9 @@ def new_recipe():
 
 @app.route("/create_recipe", methods=["POST"])
 def create_recipe():
+    if "user_id" not in session:
+        return redirect("/login")
+
     name = request.form["name"]
     cooking_time = request.form["cooking_time"]
     ingredients = request.form["ingredients"]
