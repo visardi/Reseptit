@@ -9,12 +9,21 @@ def get_recipes():
     return db.query(sql)
 
 def get_recipe(recipe_id):
-    sql = """SELECT recipes.name,
+    sql = """SELECT recipes.id,
+                    recipes.name,
                     recipes.cooking_time,
                     recipes.ingredients,
                     recipes.instructions,
+                    users.id user_id,
                     users.username
             FROM recipes, users
-            WHERE recipes.id = ?"""
+            WHERE recipes.user_id = users.id AND recipes.id = ?"""
     return db.query(sql,[recipe_id])[0]
 
+def update_recipe(recipe_id, name, cooking_time, ingredients, instructions):
+    sql = """UPDATE recipes SET name = ?,
+                                cooking_time = ?,
+                                ingredients = ?,
+                                instructions = ?
+                            WHERE id = ?"""
+    db.execute(sql, [name, cooking_time, ingredients, instructions, recipe_id])

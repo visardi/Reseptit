@@ -39,6 +39,37 @@ def create_recipe():
 
     return redirect("/")
 
+@app.route("/edit_recipe/<int:recipe_id>")
+def edit_recipe(recipe_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    recipe = recipes.get_recipe(recipe_id)
+
+    if recipe["user_id"] != session["user_id"]:
+        return "Ei käyttöoikeutta"
+
+    return render_template("edit_recipe.html", recipe=recipe)
+
+@app.route("/update_recipe", methods=["POST"])
+def update_recipe():
+    if "user_id" not in session:
+        return redirect("/login")
+    recipe_id = request.form["recipe_id"]
+    name = request.form["name"]
+    cooking_time = request.form["cooking_time"]
+    ingredients = request.form["ingredients"]
+    instructions= request.form["instructions"]
+
+
+    recipes.update_recipe(recipe_id, name, cooking_time, ingredients, instructions)
+
+    return redirect("/recipe/" + str(recipe_id))
+
+
+
+
+
 
 @app.route("/register")
 def register():
