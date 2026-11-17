@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import config
 import db
 import recipes
+import re
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -44,9 +45,17 @@ def create_recipe():
     require_login()
 
     name = request.form["name"]
+    if not name or len(name) > 50:
+        abort(403)
     cooking_time = request.form["cooking_time"]
+    if not cooking_time or not re.fullmatch("[1-9][0-9]{0,3}", cooking_time):
+        abort(403)
     ingredients = request.form["ingredients"]
+    if not ingredients or len(ingredients) > 1000:
+        abort(403)
     instructions= request.form["instructions"]
+    if not instructions or len(instructions) > 1000:
+        abort(403)
     user_id = session["user_id"]
 
 
