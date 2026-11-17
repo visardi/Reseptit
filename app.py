@@ -71,7 +71,8 @@ def edit_recipe(recipe_id):
         abort(404)
     if recipe["user_id"] != session["user_id"]:
         abort(403)
-
+    
+   
     return render_template("edit_recipe.html", recipe=recipe)
 
 @app.route("/update_recipe", methods=["POST"])
@@ -84,12 +85,21 @@ def update_recipe():
     if recipe["user_id"] != session["user_id"]:
         abort(403)
     
+    
 
     recipe_id = request.form["recipe_id"]
     name = request.form["name"]
+    if not name or len(name) > 50:
+        abort(403)
     cooking_time = request.form["cooking_time"]
+    if not cooking_time or not re.fullmatch("[1-9][0-9]{0,3}", cooking_time):
+        abort(403)
     ingredients = request.form["ingredients"]
+    if not ingredients or len(ingredients) > 1000:
+        abort(403)
     instructions= request.form["instructions"]
+    if not instructions or len(instructions) > 1000:
+        abort(403)
 
 
     recipes.update_recipe(recipe_id, name, cooking_time, ingredients, instructions)
