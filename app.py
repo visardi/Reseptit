@@ -6,6 +6,7 @@ import config
 import db
 import recipes
 import re
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -18,6 +19,15 @@ def require_login():
 def index():
     all_recipes = recipes.get_recipes()
     return render_template("index.html", recipes=all_recipes)
+
+@app.route("/user/<int:user_id>")
+def show_user(user_id):
+    user = users.get_user(user_id)
+    if not user:
+        abort(404)
+    recipes = users.get_recipes(user_id)
+    return render_template("show_user.html", user=user, recipes=recipes)
+
 
 @app.route("/find_recipe")
 def find_recipe():
@@ -33,6 +43,8 @@ def find_recipe():
 @app.route("/recipe/<int:recipe_id>")
 def show_recipe(recipe_id):
     recipe = recipes.get_recipe(recipe_id)
+    if not recipe:
+        abort(404)
     return render_template("show_recipe.html", recipe=recipe)
 
 @app.route("/new_recipe")
