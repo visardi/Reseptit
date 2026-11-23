@@ -1,8 +1,8 @@
-### Sovelluksen testaaminen###
+ Sovelluksen testaaminen
 - aja komentorivillä komento git clone https://github.com/visardi/Reseptit.git
 - varmista että olet Reseptit -kansiossa minkä juuri kloonasit!
-- aja komento python3 "-m venv venv" luodaksesi virtuaaliympäristö
-- aja komento source "venv/bin/activate"
+- aja komento "python3 -m venv venv" luodaksesi virtuaaliympäristö
+- aja komento "source venv/bin/activate"
 - aja komento "pip install flask" ladataksesi flaskin samaan kansioon
 - aja komento "sqlite3 database.db < schema.sql" alustaaksesi tietokannan
 - aja komento "flask run" avataksesi web-sovelluksen paikallisesti omalla koneella
